@@ -12,10 +12,10 @@ $(function () {
             let that = this;
             if (window.location.href.indexOf("/projects/") !== -1) {
                 console.log("Projects Page");
-                that.configure_project_page();
+                that.configure_projects_page();
             }
         },
-        configure_project_page: function() {
+        configure_projects_page: function() {
             let that = this;
             let table_data = [{
                     "Name": "Paul",
@@ -42,7 +42,7 @@ $(function () {
                     "Contact": "+324290418345"
                 }
             ];
-            $('#table_id').DataTable({
+            $('#projects_table').DataTable({
                 "destroy": true, // In order to reinitialize the datatable
                 "pagination": true, // For Pagination
                 "sorting": true, // For sorting
