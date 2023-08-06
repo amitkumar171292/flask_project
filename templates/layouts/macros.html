@@ -1,0 +1,12 @@
+{% macro mcube_btn_builder(id='', btn_class='', btn_text='', modal=false, target='', link=false, btn_link='#') %}
+<a type="button" class="{{ btn_class }} p-3" 
+{% if modal %}
+    data-toggle="modal"
+    data-target="#add_project"
+{% endif %}
+{% if link %}
+    href="{{ btn_link }}"
+{% endif %}
+>{{ btn_text }}
+</a>    
+{% endmacro %}

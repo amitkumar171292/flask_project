@@ -1,0 +1,55 @@
+.header-bg {
+    font: normal normal 600 12px/21px Nunito;
+    color: #0089ff;
+    background: #0089ff1a 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 2px #00000033;
+    border-radius: 2px;
+}
+.home-page-bg {
+    background: #0089ff1a 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 2px #00000033;
+}
+.text-wiz-dc8233 {
+    font: normal normal 600 22px/25px Nunito;
+    color: #dc8233;
+}
+.btn-wiz-f47b4e {
+    background: #f47b4e;
+    box-shadow: 0px 2px 4px #00000033;
+    border-radius: 22px;
+    opacity: 1;
+    color: white;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+    z-index: 100;
+}
+.btn-wiz-f47b4e:hover {
+    background: #0f7a79;
+    color: white;
+}
+.btn-wiz-a21107 {
+    background: #a21107;
+    box-shadow: 0px 2px 4px #00000033;
+    border-radius: 22px;
+    opacity: 1;
+    color: white !important;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+}
+.btn-wiz-a21107:hover {
+    background: #a21107;
+    color: white;
+}
+.btn-wiz-dc8233 {
+    background: #dc8233;
+    box-shadow: 0px 2px 4px #00000033;
+    border-radius: 22px;
+    opacity: 1;
+    color: white !important;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+}
+.btn-wiz-dc8233:hover {
+    background: #dc8233;
+    color: white;
+}

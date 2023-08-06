@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+{% import 'layouts/macros.html' as BASE_BUILDER %}
+{% block title %}
+    MCube Home
+{% endblock %}
+{% block main_content %}
+    <div class="container home-page-bg p-3 mt-3">
+        <div class="row">
+            <div class="col-4 text-center">
+                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn-wiz-f47b4e', btn_text='Project', link=true, btn_link="/projects/") }}
+            </div>
+            <div class="col-4 text-center">
+                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn-wiz-a21107', btn_text='Task', link=true, btn_link="/tasks/") }}
+            </div>
+            <div class="col-4 text-center">
+                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn-wiz-dc8233', btn_text='User', link=true, btn_link="/users/") }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
