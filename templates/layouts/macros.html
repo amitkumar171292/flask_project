@@ -1,0 +1,21 @@
+<!-- Macro to create Button -->
+{% macro mcube_btn_builder(id='', btn_class='', btn_text='', target='', btn_link='#', btn_type='button', modal=false, link=false, modal_dismiss=false) %}
+<a type="{{ btn_type }}" class="{{ btn_class }} p-3" 
+{% if modal %}
+    data-toggle="modal"
+    data-target="#{{ target }}"
+{% endif %}
+{% if link %}
+    href="{{ btn_link }}"
+{% endif %}
+{% if modal_dismiss %}
+    data-dismiss="modal"
+{% endif %}
+>{{ btn_text }}
+</a>    
+{% endmacro %}
+<!-- Macro to create input -->
+{% macro mcube_input_builder(id="", label_text="", input_type="text", input_text="", value="", required=false) %}
+    <label for="{{ id }}">{{ label_text }}</label>
+    <input type="{{ input_type }}" id="{{ id }}" class="form-control" name="{{ input_text }}", value="" {% if required %} required="1" {% endif %}>
+{% endmacro %}
