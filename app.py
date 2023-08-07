@@ -6,10 +6,10 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
-@app.route("/<page>/")
-def pages(page):
-    if page in ["projects", "tasks", "users"]:
-        return render_template(page + "/index.html")
+@app.route("/<page_type>/")
+def pages(page_type):
+    if page_type in ["projects", "tasks", "users"]:
+        return render_template(page_type + "/index.html")
     else:
         return abort(404)
   

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% include 'header.html' %}
 {% import 'layouts/macros.html' as BASE_BUILDER %}
+{% import 'projects/layouts/modals.html' as MODAL_BUILDER %}
 {% block title %}
     MCube Programs
 {% endblock %}
@@ -11,16 +12,14 @@
                 <span class="text-wiz-dc8233">My Projects</span>
             </div>
             <div class="col-6 text-right">
-                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn btn-success', btn_text='Add New Project', modal=true, target='#add_project') }}
+                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn btn-success', btn_text='Add New Project', modal=true, target='add_new_project') }}
             </div>
             <div class="col-12 mt-3">
                 <table id="projects_table" class="display">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Age</th>
-                            <th>Location</th>
-                            <th>Contact</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,4 +28,5 @@
             </div>
         </div>
     </div>
+{{ MODAL_BUILDER.add_project_modal() }}
 {% endblock %}

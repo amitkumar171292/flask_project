@@ -18,28 +18,20 @@ $(function () {
         configure_projects_page: function() {
             let that = this;
             let table_data = [{
-                    "Name": "Paul",
-                    "Age": 22,
-                    "Location": "Canada",
-                    "Contact": "+1290418345"
+                    "Name": "Project 1",
+                    "Description": "This is Project 1",
                 },
                 {
-                    "Name": "Erica",
-                    "Age": 32,
-                    "Location": "Miami",
-                    "Contact": "+1992418345"
+                    "Name": "Project 2",
+                    "Description": "This is Project 2",
                 },
                 {
-                    "Name": "Pritam",
-                    "Age": 29,
-                    "Location": "India",
-                    "Contact": "+91977418345"
+                    "Name": "Project 3",
+                    "Description": "This is Project 3",
                 },
                 {
-                    "Name": "Williams",
-                    "Age": 20,
-                    "Location": "England",
-                    "Contact": "+324290418345"
+                    "Name": "Project 4",
+                    "Description": "This is Project 4",
                 }
             ];
             $('#projects_table').DataTable({
@@ -51,11 +43,7 @@ $(function () {
                 "columns": [{
                     "data": "Name", "searchable": true, "orderable": true
                     }, {
-                    "data": "Age"
-                    }, {
-                    "data": "Location"
-                    }, {
-                    "data": "Contact"
+                    "data": "Description"
                     }
                 ]
             });
