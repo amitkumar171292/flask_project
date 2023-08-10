@@ -8,8 +8,9 @@ CREATE TABLE projects (
 
 -- Create a table for users
 CREATE TABLE users (
-    user_id INTEGER PRIMARY KEY,
-    username TEXT NOT NULL,
+    username TEXT PRIMARY KEY,
+    name Text NOT NULL,
+    phone_number INTEGER NOT NULL,
     email TEXT,
     last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -27,8 +28,8 @@ CREATE TABLE tasks (
 -- Create a table for task assignments (M:N relationship between tasks and users)
 CREATE TABLE task_assignments (
     task_id INTEGER,
-    user_id INTEGER,
-    PRIMARY KEY (task_id, user_id),
-    FOREIGN KEY (task_id) REFERENCES tasks(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    username INTEGER,
+    PRIMARY KEY (task_id, username),
+    FOREIGN KEY (task_id) REFERENCES tasks(task_id),
+    FOREIGN KEY (username) REFERENCES users(username)
 );
