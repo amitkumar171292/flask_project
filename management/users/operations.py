@@ -1,32 +1,72 @@
 import uuid
 from datetime import datetime
 import random
+import sqlite3
+from sqlite3 import OperationalError
+from typing import List
 
-class UsersDB:
-    """Users DB operations"""
+class User:
+    """
+    This class gives definition of Users Table
+    username: Unique id of the user
+    name: Name of the user
+    phone_number: Phone number of the user
+    email: Email of the user
+    last_modified: Timestamp with timezone while making changes to the users 
+    """
 
-    def __init__(self, name, phone_number, email):
+    def __init__(self, username, name, phone_number, email, last_modified) -> None:
+        self.username = username
         self.name = name
         self.phone_number = phone_number
         self.email = email
+        self.last_modified = last_modified
+    
+    def dump(self) -> dict:
+        """This function returns dictionary from Class object"""
+        # Vars is being used to convert the data into dictionary by mapping column name with the value
+        return dict(vars(self).items())
+
+    def dumps(self) -> str:
+        """This function returns string from Class object"""
+        data = dict(vars(self).items())
+        return json.dumps(data)
+
+    @staticmethod
+    def load(d: dict) -> "User":
+        """This function returns Class object from dictionary"""
+        return User(**d)
+
+    @staticmethod
+    def loads(d: str) -> "User":
+        """This function returns Class object from string"""
+        d = json.loads(d)
+        return User(**d)
+
+
+class UserDB:
+    """User DB operations"""
+
+    def __init__(self):
+        pass
 
     def add_user(self, name, phone_number, email):
-        """Add new user in the db"""
+        """Add new User in the db"""
         try:
             response = False
             print(f"Adding {name} user details to DB")
-            response = _add_user(
+            response, user = _add_user(
                 name,
                 phone_number,
                 email,
             )
         except Exception:
             print(f"Critical error in add_user - {name} ")
-            response = False
-        return response
+            response, user = False, None
+        return response, user
     
     def update_user(self, name, phone_number, email):
-        """Update UserDB object details in the db"""
+        """Update User object details in the db"""
         try:
             response = False
             print(f"Updating {name} user details to DB")
@@ -40,8 +80,8 @@ class UsersDB:
             response = False
         return response
     
-    def get_user(self, username):
-        """Get UserDB object details from the db"""
+    def get_user(self, username) -> User:
+        """Get User object details from the db"""
         try:
             print(f"Fetching user details - {username}")
             user = None
@@ -50,12 +90,12 @@ class UsersDB:
             print(f"Critical error in get_user - {ex}")
         return user
     
-    def get_limited_users(self, page_number, record_count):
-        """Get limited object from the db or []"""
+    def get_limited_users(self, page_number, record_count) -> List[User]:
+        """Get limited User object from the db or []"""
         try:
-            response = []
+            response: List[User] = []
             print("Getting limited users added till now")
-            response = _get_limited_users(page_number, record_count) or []
+            response: List[User] = _get_limited_users(page_number, record_count) or []
             print(f"get_limited_users from DB - {response}"[:5])
         except Exception:
             print("Critical error in get_limited_users")
@@ -74,12 +114,12 @@ class UsersDB:
             response = 0
         return response
 
-    def get_all_users(self):
-        """Get all users object from the db or []"""
+    def get_all_users(self) -> List[User]:
+        """Get all User object from the db or []"""
         try:
-            response = []
+            response: List[User]= []
             print("Getting all users added till now")
-            response = _get_all_users() or []
+            response: List[User] = _get_all_users() or []
             print(f"get_all_users from DB - {response}"[:5])
         except Exception:
             print("Critical error in get_all_users")
@@ -95,16 +135,24 @@ def _add_user(name, phone_number, email):
         conn = sqlite3.connect('mcube.db')
         cursor = conn.cursor()
         last_modified = datetime.utcnow()
-        username = name.split(' ')[0] + str(random.randint(10000, 99999))
+        username = name.split(' ')[0].lower() + str(random.randint(10000, 99999))
 
-        insert_user = "INSERT INTO users (username, name, phone_number, email, last_modified) VALUES (?, ?, ?, ?, ?)"
-        user_data = (username, name, phone_number, email, last_modified)
+        user = User(
+            username=username,
+            name=name,
+            phone_number=phone_number,
+            email=email,
+            last_modified=last_modified
+        )
 
-        cursor.execute(insert_user, user_data)
+        sql = "INSERT INTO users (username, name, phone_number, email, last_modified) VALUES (%(username)s, %(name)s, %(phone_number)s, %(email)s, %(last_modified)s)"
+
+        cursor.execute(sql, user.dump())
         conn.commit()
         cursor.close()
         conn.close()
-        return True
+        print("Added user details to db")
+        return True, user
     except OperationalError as ex:
         print("Error occurred in _add_user")
         raise ex
@@ -118,13 +166,14 @@ def _update_user(username, name, phone_number, email):
         cursor = conn.cursor()
         last_modified = datetime.utcnow()
 
-        update_user = "UPDATE users SET name = ?, phone_number = ?, email = ?, last_modified = ? WHERE username = ?;"
+        sql = "UPDATE users SET name = %s, phone_number = %s, email = %s, last_modified = %s WHERE username = %s;"
         user_data = (name, phone_number, email, last_modified, username)
 
-        cursor.execute(update_user, user_data)
+        cursor.execute(sql, user_data)
         conn.commit()
         cursor.close()
         conn.close()
+        print("Updated user details to db")
         return True
     except OperationalError as ex:
         print("Error occurred in _update_user")
@@ -136,21 +185,25 @@ def _get_user(username):
     try:
         print(f"Fetching user having username: {username}")
         conn = sqlite3.connect('mcube.db')
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        select_query = "SELECT username, name, phone_number, email, last_modified FROM users;"
-
-        cursor.execute(select_query)
+        sql = "SELECT username, name, phone_number, email, last_modified FROM users where username = %s;"
+        data = (username,)
+        cursor.execute(sql, data)
         result = cursor.fetchone()
-        _result = None
+        _result = []
         # to avoid error if result is empty
-        for row in result:
-            _result = dict(row)
+        _result = [User.load(dict(row)) for row in result]
 
-        conn.commit()
         cursor.close()
         conn.close()
-        return _result
+
+        print("Fetch data from the User Db")
+        if len(_result) >= 1:
+            return _result[0]
+        else:
+            return None
     except OperationalError as ex:
         print("Error occurred in _get_user")
         raise ex
@@ -158,20 +211,20 @@ def _get_user(username):
 def _get_all_users():
     """This is a private function to get user"""
     try:
-        print("Fetching user having username")
+        print("Fetching all users")
         conn = sqlite3.connect('mcube.db')
+        conn.row_factory = sqlite3.Row  # Set the Row factory
         cursor = conn.cursor()
 
         select_query = "SELECT * FROM users;"
-
-        cursor.execute(select_query)
+        cursor.execute(select_query,)
         result = cursor.fetchall()
         _result = []
         # to avoid error if result is empty
+        # _result = [User.load(dict(row)) for row in result]
         for row in result:
-            _result.append(dict(row))
+            _result.append(User.load(dict(row)))
 
-        conn.commit()
         cursor.close()
         conn.close()
         return _result
@@ -204,22 +257,21 @@ def _get_limited_users(page_number, record_count):
     try:
         print("Fetching limited users")
         conn = sqlite3.connect('mcube.db')
+        conn.row_factory = sqlite3.Row  # Set the Row factory
         cursor = conn.cursor()
 
         # Calculate the OFFSET value based on page_number and record_count
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = f"SELECT * FROM users LIMIT {record_count} OFFSET {offset}"
+        query = "SELECT * FROM users OFFSET %s LIMIT %s"
 
-        cursor.execute(query)
+        cursor.execute(query, (offset, record_count,),)
         result = cursor.fetchall()
         _results = []
         # to avoid error if result is empty
-        for row in result:
-            _results.append(dict(row))
+        _results = [User.load(dict(row)) for row in result]
 
-        conn.commit()
         cursor.close()
         conn.close()
         return _results

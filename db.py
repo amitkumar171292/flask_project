@@ -1,9 +1,11 @@
 import sqlite3
+from flask import g
 
 class DbConfig():
     """This class will help in initializing the DB"""
 
     def __init__(self, app):
+        self.app = app
         app.config['DATABASE'] = 'macube.db'
 
     def get_db():
@@ -20,8 +22,7 @@ class DbConfig():
                 db.cursor().executescript(f.read())
             db.commit()
 
-    @app.cli.command('initdb')
-    def initdb_command():
+    def initdb_command(self):
         """Initialize the database."""
-        init_db()
+        self.init_db()
         print('Initialized the database.')

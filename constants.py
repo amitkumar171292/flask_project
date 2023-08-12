@@ -9,3 +9,10 @@ class TaskStatus(IntEnum):
     NOT_STARTED = 0
     IN_PROGRESS = 1
     COMPLETED = 2
+
+RESPONSE_STATUS_KWD = "status"
+RESPONSE_MSG_KWD = "msg"
+DEFAULT_API_RESPONSE_OBJ = {
+    RESPONSE_STATUS_KWD: False,
+    RESPONSE_MSG_KWD: "TODO",
+}

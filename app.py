@@ -5,6 +5,7 @@ from datetime import datetime
 import sqlite3
 from sqlalchemy import create_engine, text
 from db import DbConfig
+from management.users.operations import UserDB
 
 app = Flask(__name__)
 
@@ -19,16 +20,12 @@ def home():
 @app.route("/<page_type>/")
 def pages(page_type):
     if page_type in ["projects", "tasks", "users"]:
-        # Declare your SQL query using text function
-        query = text('SELECT * FROM users')
-        # Execute the query using the engine
-        with engine.connect() as connection:
-            result = connection.execute(query)
-            rows = result.fetchall()
+        resp = UserDB().add_user('Amit', 8744826266, 'amit.kumar@wizklub.com')
+        if resp:
+            response = UserDB().get_all_users()
+            if response:
+                print(response)
 
-        # Print the retrieved rows
-        for row in rows:
-            print(row)
         return render_template(page_type + "/index.html")
     else:
         return abort(404)
