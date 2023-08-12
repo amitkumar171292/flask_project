@@ -126,6 +126,7 @@ class UserDB:
             response = []
         return response
 
+
 # region UsersDB
 
 def _add_user(name, phone_number, email):
@@ -136,7 +137,6 @@ def _add_user(name, phone_number, email):
         cursor = conn.cursor()
         last_modified = datetime.utcnow()
         username = name.split(' ')[0].lower() + str(random.randint(10000, 99999))
-
         user = User(
             username=username,
             name=name,
@@ -144,8 +144,7 @@ def _add_user(name, phone_number, email):
             email=email,
             last_modified=last_modified
         )
-
-        sql = "INSERT INTO users (username, name, phone_number, email, last_modified) VALUES (%(username)s, %(name)s, %(phone_number)s, %(email)s, %(last_modified)s)"
+        sql = "INSERT INTO users (username, name, phone_number, email, last_modified) VALUES (:username, :name, :phone_number, :email, :last_modified)"
 
         cursor.execute(sql, user.dump())
         conn.commit()

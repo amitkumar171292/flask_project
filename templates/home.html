@@ -8,13 +8,13 @@
     <div class="container home-page-bg p-3 mt-3">
         <div class="row">
             <div class="col-4 text-center">
-                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn-wiz-f47b4e', btn_text='Project', link=true, btn_link="/projects/") }}
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_class='btn-mcube-f47b4e', btn_text='Projects', link=true, btn_link=url_for('pages', page_type='projects')) }}
             </div>
             <div class="col-4 text-center">
-                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn-wiz-a21107', btn_text='Task', link=true, btn_link="/tasks/") }}
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_class='btn-mcube-a21107', btn_text='Tasks', link=true, btn_link=url_for('pages', page_type='tasks')) }}
             </div>
             <div class="col-4 text-center">
-                {{ BASE_BUILDER.mcube_btn_builder(id='', btn_class='btn-wiz-dc8233', btn_text='User', link=true, btn_link="/users/") }}
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_class='btn-mcube-dc8233', btn_text='Users', link=true, btn_link=url_for('pages', page_type='users')) }}
             </div>
         </div>
     </div>
