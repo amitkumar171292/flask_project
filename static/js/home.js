@@ -23,25 +23,27 @@ $(function () {
         },
         configure_projects_page: function () {
             let that = this;
-            let table_data = []
-            that.fetch_entity_data('projects', 'update_project');
-            that.configure_entity_datatable('projects_table', table_data);
-            that.add_entity_data('projects');
+            that.fetch_entity_data('projects');
+            that.add_entity_data('projects', 'add_new_project');
+            that.update_entity_data('projects', "update_project");
+            that.delete_entity_data('projects', "delete_project");
+            that.configure_entity_datatable('projects_table', []);
         },
         configure_users_page: function () {
             let that = this;
-            let table_data = []
             that.fetch_entity_data('users');
             that.add_entity_data('users', 'add_new_user');
             that.update_entity_data('users', "update_user");
             that.delete_entity_data('users', "delete_user");
+            that.configure_entity_datatable('users_table', []);
         },
         configure_tasks_page: function () {
             let that = this;
-            let table_data = []
             that.fetch_entity_data('tasks');
-            that.configure_entity_datatable('tasks_table', table_data);
-            that.add_entity_data('tasks', 'update_task');
+            that.add_entity_data('tasks', 'add_new_task');
+            that.update_entity_data('tasks', "update_task");
+            that.delete_entity_data('tasks', "delete_task");
+            that.configure_entity_datatable('tasks_table', []);
         },
         configure_entity_datatable: function (data_table_id, table_data) {
             let data_tables_columns = document.getElementById("data_table_column");
@@ -102,7 +104,6 @@ $(function () {
                 url: '/fetch_data/'+entity_name,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     if (data['status'])
                         that.configure_entity_datatable(entity_name+'_table', data['entity_data']);
                 },
@@ -138,9 +139,6 @@ $(function () {
                         data: JSON.stringify(payload),
                         success: function (data) {
                             that.default_ajax_response(modal_id, data);
-                            setTimeout(function () {
-                                location.reload();
-                            }, 2000);
                         },
                         error: function (error) {
                             console.error(error);
@@ -168,9 +166,6 @@ $(function () {
                     data: JSON.stringify(payload),
                     success: function (data) {
                         that.default_ajax_response(modal_id, data);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 2000);
                     },
                     error: function (error) {
                         console.error(error);
@@ -191,6 +186,7 @@ $(function () {
             }
             setTimeout(() => {
                 notification_message.parentNode.classList.add("d-none");
+                location.reload();
             }, 2000);
         },
     };

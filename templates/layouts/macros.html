@@ -28,3 +28,10 @@
         {{ mcube_btn_builder(btn_id='', btn_color="btn-mcube-a21107", btn_class='delete-entity', btn_text='Delete', entity_unique_id=entity_unique_id, target='delete_'+entity_name, modal=true, modal_dismiss=false) }}
     </div>
 {% endmacro %}
+<!-- Default back button macro  -->
+{% macro default_back_btn() %}
+<div class="d-flex m-3">
+    <img src="{{ url_for('static', filename='images/arrow-left.svg') }}" alt="Back Button">
+    <a href="{{ url_for('home') }}" class="text-mcube-0f7a79 text-decoration-none pl-2">Home</a>
+</div>
+{% endmacro %}

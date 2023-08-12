@@ -6,7 +6,11 @@ import sqlite3
 from sqlalchemy import create_engine, text
 from db import DbConfig
 from management.users.operations import User, UserDB
+from management.projects.operations import Project, ProjectDB
+from management.tasks.operations import Task, TaskDB
 from management.users.api import add_new_user, update_user, delete_user, fetch_all_users
+from management.projects.api import add_new_project, update_project, delete_project, fetch_all_projects
+from management.tasks.api import add_new_task, update_task, delete_task, fetch_all_tasks
 import requests
 import json
 
@@ -28,10 +32,10 @@ def pages(page_type):
         response = UserDB().get_all_users()
         return render_template(page_type + "/index.html")
     elif page_type == 'projects':
-        response = UserDB().get_all_users()
+        response = ProjectDB().get_all_projects()
         return render_template(page_type + "/index.html")
     elif page_type == 'tasks':
-        response = UserDB().get_all_users()
+        response = TaskDB().get_all_tasks()
         return render_template(page_type + "/index.html")
     else:
         return abort(404)
@@ -73,9 +77,9 @@ def insert_data(page_type):
         if page_type == 'users':
             response = add_new_user(data)
         elif page_type == 'projects':
-            response = fetch_all_projects(data)
+            response = add_new_project(data)
         elif page_type == 'tasks':
-            response = fetch_all_tasks(data)
+            response = add_new_task(data)
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -88,9 +92,9 @@ def update_data(page_type):
         if page_type == 'users':
             response = update_user(data)
         elif page_type == 'projects':
-            response = fetch_all_projects(data)
+            response = update_project(data)
         elif page_type == 'tasks':
-            response = fetch_all_tasks(data)
+            response = update_task(data)
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -103,9 +107,9 @@ def delete_data(page_type):
         if page_type == 'users':
             response = delete_user(data)
         elif page_type == 'projects':
-            response = fetch_all_projects(data)
+            response = delete_project(data)
         elif page_type == 'tasks':
-            response = fetch_all_tasks(data)
+            response = delete_task(data)
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})

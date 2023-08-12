@@ -6,10 +6,7 @@
     MCube Users
 {% endblock %}
 {% block back_button %}
-    <div class="d-flex m-3">
-        <img src="{{ url_for('static', filename='images/arrow-left.svg') }}" alt="Back Button">
-        <a href="{{ url_for('home') }}" class="text-mcube-0f7a79 text-decoration-none pl-2">Home</a>
-    </div>
+    {{ BASE_BUILDER.default_back_btn() }}
 {% endblock %}
 {% block main_content %}
     <div class="home-page-bg p-3 mt-3 mx-3">
@@ -21,7 +18,7 @@
                 {{ BASE_BUILDER.mcube_btn_builder(btn_id='add_user', btn_color='btn btn-success', btn_text='Add New User', modal=true, target='add_new_user', modal_dismiss=true) }}
             </div>
             {% set columns = [
-                { "data": "index"}, 
+                { "data": "index", "searchable": false, "orderable": false }, 
                 { "data": "username", "searchable": true, "orderable": true }, 
                 { "data": "name", "searchable": true, "orderable": true },
                 { "data": "phone_number", "searchable": true, "orderable": true },
@@ -29,8 +26,7 @@
                 { "data": "last_modified", "searchable": true, "orderable": true },
                 { "data": "modify", "searchable": false, "orderable": false }
             ] %}
-            <div id="data_table_column" data-columns="{{ columns }}" class="d-none">
-            </div>
+            <div id="data_table_column" data-columns="{{ columns }}" class="d-none"></div>
             <div class="col-12 mt-3">
                 <table id="users_table" class="display">
                     <thead>

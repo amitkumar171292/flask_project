@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 import random
 import sqlite3
@@ -155,7 +154,7 @@ def _add_user(name, phone_number, email):
             email=email,
             last_modified=last_modified
         )
-        sql = "INSERT INTO users (username, name, phone_number, email, last_modified) VALUES (:username, :name, :phone_number, :email, :last_modified)"
+        sql = "INSERT INTO users (username, name, phone_number, email, last_modified) VALUES (:username, :name, :phone_number, :email, :last_modified);"
 
         cursor.execute(sql, user.dump())
         conn.commit()
@@ -229,9 +228,7 @@ def _get_all_users():
         result = cursor.fetchall()
         _result = []
         # to avoid error if result is empty
-        # _result = [User.load(dict(row)) for row in result]
-        for row in result:
-            _result.append(User.load(dict(row)))
+        _result = [User.load(dict(row)) for row in result]
 
         cursor.close()
         conn.close()

@@ -5,6 +5,9 @@
 {% block title %}
     MCube Programs
 {% endblock %}
+{% block back_button %}
+    {{ BASE_BUILDER.default_back_btn() }}
+{% endblock %}
 {% block main_content %}
     <div class="home-page-bg p-3 mt-3 mx-3">
         <div class="row">
@@ -14,12 +17,25 @@
             <div class="col-6 text-right">
                 {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn btn-success', btn_text='Add New Project', modal=true, target='add_new_project') }}
             </div>
+            {% set columns = [
+                { "data": "index", "searchable": false, "orderable": false }, 
+                { "data": "project_id", "searchable": true, "orderable": true }, 
+                { "data": "name", "searchable": true, "orderable": true },
+                { "data": "description", "searchable": true, "orderable": true },
+                { "data": "last_modified", "searchable": true, "orderable": true },
+                { "data": "modify", "searchable": false, "orderable": false }
+            ] %}
+            <div id="data_table_column" data-columns="{{ columns }}" class="d-none"></div>
             <div class="col-12 mt-3">
                 <table id="projects_table" class="display">
                     <thead>
                         <tr>
+                            <th>Index</th>
+                            <th>Project Id</th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Last Modified</th>
+                            <th>Modify</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,4 +45,6 @@
         </div>
     </div>
 {{ MODAL_BUILDER.add_project_modal() }}
+{{ MODAL_BUILDER.update_project_modal() }}
+{{ MODAL_BUILDER.delete_project_modal() }}
 {% endblock %}

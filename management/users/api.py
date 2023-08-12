@@ -19,7 +19,7 @@ def add_new_user(content):
                 response[RESPONSE_MSG_KWD] = f"We have successfully added User to DB: {content['username']}"
 
     except Exception as ex:
-        print(f"Error Occured create_batch - {ex}")
+        print(f"Error Occured add_new_user - {ex}")
     return response
 
 def fetch_all_users():
@@ -33,10 +33,10 @@ def fetch_all_users():
         if user_data:
             response["entity_data"] = user_data
             response[RESPONSE_STATUS_KWD] = True
-            response[RESPONSE_MSG_KWD] = "We have fetch the data successfully"
+            response[RESPONSE_MSG_KWD] = "We have fetched the data successfully"
 
     except Exception as ex:
-        print(f"Error Occured create_batch - {ex}")
+        print(f"Error Occured fetch_all_users - {ex}")
     return response
 
 def update_user(content):
