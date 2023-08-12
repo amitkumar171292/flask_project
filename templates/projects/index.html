@@ -6,13 +6,13 @@
     MCube Programs
 {% endblock %}
 {% block main_content %}
-    <div class="container home-page-bg p-3 mt-3">
+    <div class="home-page-bg p-3 mt-3 mx-3">
         <div class="row">
             <div class="col-6 d-flex align-items-center">
                 <span class="text-mcube-dc8233">My Projects</span>
             </div>
             <div class="col-6 text-right">
-                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_class='btn btn-success', btn_text='Add New Project', modal=true, target='add_new_project') }}
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn btn-success', btn_text='Add New Project', modal=true, target='add_new_project') }}
             </div>
             <div class="col-12 mt-3">
                 <table id="projects_table" class="display">

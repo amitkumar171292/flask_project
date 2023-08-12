@@ -6,26 +6,28 @@
     MCube Users
 {% endblock %}
 {% block back_button %}
-    <div class="container d-flex my-3">
+    <div class="d-flex m-3">
         <img src="{{ url_for('static', filename='images/arrow-left.svg') }}" alt="Back Button">
-        <a href="{{ url_for('home') }}" class="text-mcube-0f7a79 pl-2">Home</a>
+        <a href="{{ url_for('home') }}" class="text-mcube-0f7a79 text-decoration-none pl-2">Home</a>
     </div>
 {% endblock %}
 {% block main_content %}
-    <div class="container home-page-bg p-3 mt-3">
+    <div class="home-page-bg p-3 mt-3 mx-3">
         <div class="row">
             <div class="col-6 d-flex align-items-center">
                 <span class="text-mcube-dc8233">My Users</span>
             </div>
             <div class="col-6 text-right">
-                {{ BASE_BUILDER.mcube_btn_builder(btn_id='add_user', btn_class='btn btn-success', btn_text='Add New User', modal=true, target='add_new_user') }}
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='add_user', btn_color='btn btn-success', btn_text='Add New User', modal=true, target='add_new_user', modal_dismiss=true) }}
             </div>
             {% set columns = [
+                { "data": "index"}, 
                 { "data": "username", "searchable": true, "orderable": true }, 
                 { "data": "name", "searchable": true, "orderable": true },
                 { "data": "phone_number", "searchable": true, "orderable": true },
                 { "data": "email", "searchable": true, "orderable": true },
-                { "data": "last_modified", "searchable": true, "orderable": true }
+                { "data": "last_modified", "searchable": true, "orderable": true },
+                { "data": "modify", "searchable": false, "orderable": false }
             ] %}
             <div id="data_table_column" data-columns="{{ columns }}" class="d-none">
             </div>
@@ -33,11 +35,13 @@
                 <table id="users_table" class="display">
                     <thead>
                         <tr>
+                            <th>Index</th>
                             <th>Username</th>
                             <th>Name</th>
                             <th>Phone Number</th>
                             <th>Email</th>
                             <th>Last Modified</th>
+                            <th>Modify</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,4 +51,6 @@
         </div>
     </div>
 {{ MODAL_BUILDER.add_user_modal() }}
+{{ MODAL_BUILDER.update_user_modal() }}
+{{ MODAL_BUILDER.delete_user_modal() }}
 {% endblock %}

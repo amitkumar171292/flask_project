@@ -65,18 +65,19 @@ class UserDB:
             response, user = False, None
         return response, user
     
-    def update_user(self, name, phone_number, email):
+    def update_user(self, username, name, phone_number, email):
         """Update User object details in the db"""
         try:
             response = False
-            print(f"Updating {name} user details to DB")
+            print(f"Updating {username} user details to DB")
             response = _update_user(
+                username,
                 name,
                 phone_number,
                 email,
             )
         except Exception:
-            print(f"Critical error in update_user - {name} ")
+            print(f"Critical error in update_user - {username} ")
             response = False
         return response
     
@@ -126,6 +127,16 @@ class UserDB:
             response = []
         return response
 
+    def delete_user(self, username):
+        """Returns status of deletion of user"""
+        try:
+            response = False
+            print("Deleting user using username")
+            response = _delete_user(username)
+            print(f"delete_user from DB -{response}")
+        except Exception:
+            print("Critical error in delete_user")
+        return response
 
 # region UsersDB
 
@@ -156,7 +167,6 @@ def _add_user(name, phone_number, email):
         print("Error occurred in _add_user")
         raise ex
 
-
 def _update_user(username, name, phone_number, email):
     """This is a private function to update user"""
     try:
@@ -165,7 +175,7 @@ def _update_user(username, name, phone_number, email):
         cursor = conn.cursor()
         last_modified = datetime.utcnow()
 
-        sql = "UPDATE users SET name = %s, phone_number = %s, email = %s, last_modified = %s WHERE username = %s;"
+        sql = "UPDATE users SET name = ?, phone_number = ?, email = ?, last_modified = ? WHERE username = ?;"
         user_data = (name, phone_number, email, last_modified, username)
 
         cursor.execute(sql, user_data)
@@ -177,7 +187,6 @@ def _update_user(username, name, phone_number, email):
     except OperationalError as ex:
         print("Error occurred in _update_user")
         raise ex
-
 
 def _get_user(username):
     """This is a private function to get user"""
@@ -276,6 +285,28 @@ def _get_limited_users(page_number, record_count):
         return _results
     except OperationalError as ex:
         print("Error occurred in _get_total_users")
+        raise ex
+
+def _delete_user(username):
+    """This is private function to delete user related details"""
+    try:
+        print(f"Running delete user details - {username}")
+        response = False
+        conn = sqlite3.connect('mcube.db')
+        cursor = conn.cursor()
+        sql = """DELETE from users WHERE username = ?;"""
+        data = (username,)
+        cursor.execute(sql, data)
+        row_count = cursor.rowcount
+        if row_count == 1:
+            response = True
+            conn.commit()
+        cursor.close()
+        conn.close()
+        print(f"Deleted user details to DB - {username}")
+        return response
+    except OperationalError as ex:
+        print("Error occurred in _delete_user")
         raise ex
 
 # endregion

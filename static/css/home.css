@@ -65,5 +65,31 @@
     background: #dc8233;
     color: white;
 }
+.btn-mcube-009290 {
+    background: #009290;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 22px;
+    opacity: 1;
+    color: white !important;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+}
+.btn-mcube-009290:hover {
+    background: #0f7a79;
+    color: white;
+}
+.btn-mcube-a21107 {
+    background: #a21107;
+    box-shadow: 0px 2px 4px #00000033;
+    border-radius: 22px;
+    opacity: 1;
+    color: white !important;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+}
+.btn-mcube-a21107:hover {
+    background: #a21107;
+    color: white;
+}
 
 /* Customized Buttons */

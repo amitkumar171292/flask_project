@@ -24,23 +24,24 @@ $(function () {
         configure_projects_page: function () {
             let that = this;
             let table_data = []
-            that.fetch_entity_data('projects');
+            that.fetch_entity_data('projects', 'update_project');
             that.configure_entity_datatable('projects_table', table_data);
-            that.add_entity_data('project_form', 'projects');
+            that.add_entity_data('projects');
         },
         configure_users_page: function () {
             let that = this;
             let table_data = []
             that.fetch_entity_data('users');
-            that.configure_entity_datatable('users_table', table_data);
-            that.add_entity_data('user_form', 'users');
+            that.add_entity_data('users', 'add_new_user');
+            that.update_entity_data('users', "update_user");
+            that.delete_entity_data('users', "delete_user");
         },
         configure_tasks_page: function () {
             let that = this;
             let table_data = []
             that.fetch_entity_data('tasks');
             that.configure_entity_datatable('tasks_table', table_data);
-            that.add_entity_data('task_form', 'tasks');
+            that.add_entity_data('tasks', 'update_task');
         },
         configure_entity_datatable: function (data_table_id, table_data) {
             let data_tables_columns = document.getElementById("data_table_column");
@@ -66,10 +67,11 @@ $(function () {
                 "columns": columns,
             });
         },
-        add_entity_data: function (form_id, entity_name) {
+        add_entity_data: function (entity_name, modal_id) {
+            let that = this;
             let payload = {};
             let submit_form_data = document.getElementById("submit_form_data");
-            let input_form = document.getElementById(form_id);
+            let input_form = document.getElementById('add_form');
             submit_form_data.addEventListener("click", function () {
                 if (!input_form.checkValidity()) {
                     input_form.classList.add('was-validated');
@@ -85,19 +87,7 @@ $(function () {
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify(payload),
                         success: function (data) {
-                            let notification_message = document.getElementById("notification_message");
-                            notification_message.parentNode.classList.remove("d-none");
-                            $('#add_new_user').modal('hide');
-                            if (data['status']) {
-                                notification_message.parentNode.classList.add("alert-success");
-                                notification_message.textContent = data['msg'];
-                            } else {
-                                notification_message.parentNode.classList.add("alert-danger");
-                                notification_message.textContent = data['msg'];
-                            }
-                            setTimeout(() => {
-                                notification_message.parentNode.classList.add("d-none");
-                            }, 2000);
+                            that.default_ajax_response(modal_id, data);
                         },
                         error: function (error) {
                             console.error(error);
@@ -120,7 +110,89 @@ $(function () {
                     console.error(error);
                 }
             });
-        }
+        },
+        update_entity_data: function (entity_name, modal_id) {
+            let that = this;
+            let entity_unique_id;
+            $(document).on('click', '.update-entity', function () {
+                entity_unique_id = $(this).data('entity_unique_id');
+                $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
+            });
+            let payload = {};
+            let update_form_data = document.getElementById("update_form_data");
+            let input_form = document.getElementById('update_form');
+            update_form_data.addEventListener("click", function () {
+                if (!input_form.checkValidity()) {
+                    input_form.classList.add('was-validated');
+                } else {
+                    let form_data = new FormData(input_form);
+                    for (let key of form_data.keys()) {
+                        payload[key] = form_data.get(key);
+                    }
+                    payload['entity_unique_id'] = entity_unique_id;
+                    $.ajax({
+                        url: '/update_data/'+entity_name,
+                        dataType: "json",
+                        type: 'POST',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(payload),
+                        success: function (data) {
+                            that.default_ajax_response(modal_id, data);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        },
+        delete_entity_data: function (entity_name, modal_id) {
+            let that = this;
+            let entity_unique_id;
+            $(document).on('click', '.delete-entity', function () {
+                entity_unique_id = $(this).data('entity_unique_id');
+                console.log(entity_unique_id);
+                $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
+            });
+            let delete_data = document.getElementById("delete_data");
+            delete_data.addEventListener("click", function() {
+                let payload = {'entity_unique_id': entity_unique_id};
+                $.ajax({
+                    url: '/delete_data/'+entity_name,
+                    dataType: "json",
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(payload),
+                    success: function (data) {
+                        that.default_ajax_response(modal_id, data);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            });
+        },
+        default_ajax_response: function (modal_id, data) {
+            let notification_message = document.getElementById("notification_message");
+            notification_message.parentNode.classList.remove("d-none");
+            $('#'+modal_id).modal('hide');
+            if (data['status']) {
+                notification_message.parentNode.classList.add("alert-success");
+                notification_message.textContent = data['msg'];
+            } else {
+                notification_message.parentNode.classList.add("alert-danger");
+                notification_message.textContent = data['msg'];
+            }
+            setTimeout(() => {
+                notification_message.parentNode.classList.add("d-none");
+            }, 2000);
+        },
     };
     $(document).ready(function () {
         MCubeHome.init();
