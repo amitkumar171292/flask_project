@@ -91,7 +91,7 @@ def insert_data(page_type):
             response = add_new_task_assignment(data)
         return jsonify(response)
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}), 400 # 400 Bad Request
 
 @app.route('/update_data/<page_type>', methods=['POST'])
 def update_data(page_type):
@@ -108,7 +108,7 @@ def update_data(page_type):
             response = updatetask_assignment(data)
         return jsonify(response)
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}), 400  # 400 Bad Request
 
 @app.route('/delete_data/<page_type>', methods=['POST'])
 def delete_data(page_type):
@@ -125,7 +125,7 @@ def delete_data(page_type):
             response = delete_task_assignment(data)
         return jsonify(response)
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}), 400  # 400 Bad Request
 
 # Route for serving favicon.ico
 @app.route("/favicon.ico")
