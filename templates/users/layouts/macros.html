@@ -1,0 +1,12 @@
+{% import 'layouts/macros.html' as BASE_BUILDER %}
+{% macro user_input_fields() %}
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_input_builder(id="name", label_text="Name:", input_type="text", placeholder="Name", invalid_msg="Enter name", required=true) }}
+</div>
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_input_builder(id="phone_number", label_text="Phone Number:", input_type="tel", placeholder="Phone number", invalid_msg="Enter Phone Number", required=true, max_length='10', pattern="[0-9]{10}") }}
+</div>
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_input_builder(id="email", label_text="Email:", input_type="email", placeholder="Email", invalid_msg="Enter Email", required=true) }}
+</div>
+{% endmacro %}

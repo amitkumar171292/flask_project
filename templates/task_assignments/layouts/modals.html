@@ -1,19 +1,19 @@
 <!-- Modal to create project -->
 {% import 'layouts/macros.html' as BASE_BUILDER %}
-{% import 'users/layouts/macros.html' as CORE_BUILDER %}
-{% macro add_user_modal() %}
-    <div id="add_new_user" class="modal fade" role="dialog">
+{% import 'task_assignments/layouts/macros.html' as CORE_BUILDER %}
+{% macro add_task_assignment_modal(task_data, user_data) %}
+    <div id="add_new_task_assignment" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add User</h4>
+                    <h4 class="modal-title">Add Task</h4>
                     <button type="button" class="close text-black" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <form id="add_form" class="needs-validation">
-                        {{ CORE_BUILDER.user_input_fields() }}
+                        {{ CORE_BUILDER.task_assignment_input_fields(task_data, user_data) }}
                         <div class="form-group">
-                            {{ BASE_BUILDER.mcube_btn_builder(btn_id='submit_form_data', btn_color='btn btn-primary', btn_text='Add User', btn_type='submit') }}
+                            {{ BASE_BUILDER.mcube_btn_builder(btn_id='submit_form_data', btn_color='btn btn-primary', btn_text='Add Task', btn_type='submit') }}
                         </div>
                     </form>
                 </div>
@@ -21,19 +21,19 @@
         </div>
     </div>
 {% endmacro %}
-{% macro update_user_modal() %}
-    <div id="update_user" class="modal fade" role="dialog">
+{% macro update_task_assignment_modal(task_data, user_data) %}
+    <div id="update_task_assignment" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Updating User: <strong id="entity_unique_id"></strong></h4>
+                    <h4 class="modal-title">Updating Task Assignment: <strong id="task_id"></strong> and <strong id="username"></strong></h4>
                     <button type="button" class="close text-black" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <form id="update_form" class="needs-validation">
-                        {{ CORE_BUILDER.user_input_fields() }}
+                        {{ CORE_BUILDER.task_assignment_input_fields(task_data, user_data) }}
                         <div class="form-group">
-                            {{ BASE_BUILDER.mcube_btn_builder(btn_id='update_form_data', btn_color='btn btn-primary', btn_text='Update User', btn_type='submit') }}
+                            {{ BASE_BUILDER.mcube_btn_builder(btn_id='update_form_data', btn_color='btn btn-primary', btn_text='Update Task', btn_type='submit') }}
                         </div>
                     </form>
                 </div>
@@ -41,18 +41,18 @@
         </div>
     </div>
 {% endmacro %}
-{% macro delete_user_modal() %}
-    <div id="delete_user" class="modal fade" role="dialog">
+{% macro delete_task_assignment_modal() %}
+    <div id="delete_task_assignment" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Deleting User</h4>
+                    <h4 class="modal-title">Deleting Task Assignment</h4>
                     <button type="button" class="close text-black" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body text-center">
-                    <span>Are you sure you want to delete user: <strong id="entity_unique_id"></strong></span>
+                    <span>Are you sure you want to delete task assignment: <strong id="task_id"></strong> and <strong id="username"></strong></span>
                     <div class="d-flex justify-content-center mt-3">
-                        {{ BASE_BUILDER.mcube_btn_builder(btn_id='delete_data', btn_color='btn btn-danger', btn_text='Delete User', btn_type='button') }}
+                        {{ BASE_BUILDER.mcube_btn_builder(btn_id='delete_data', btn_color='btn btn-danger', btn_text='Delete Task', btn_type='button') }}
                         <button type="button" class="btn btn-primary ml-3" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>

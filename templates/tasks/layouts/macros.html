@@ -1,0 +1,16 @@
+{% import 'layouts/macros.html' as BASE_BUILDER %}
+{% macro task_input_fields(project_data) %}
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_dropdown(id="project_id", text="Select Project:", label="Project Id", primary_class="", invalid_msg="Please select project", items=project_data, required=true) }}
+</div>
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_input_builder(id="name", label_text="Name:", input_type="text", placeholder="name", invalid_msg="Please enter name", required=true) }}
+</div>
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_textarea(id='description', label_text='Description:', valid_msg="", invalid_msg="Please enter description", required=true) }}
+</div>
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_dropdown(id="status", text="Select Status:", label="Status", primary_class="", invalid_msg="Please enter status", 
+    items=[{'action': 'NOT_STARTED', 'value': 'NOT STARTED'}, {'action': 'IN_PROGRESS', 'value': 'IN PROGRESS'}, {'action': 'COMPLETED', 'value': 'COMPLETED'}]) }}
+</div>
+{% endmacro %}

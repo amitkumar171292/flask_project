@@ -1,0 +1,9 @@
+{% import 'layouts/macros.html' as BASE_BUILDER %}
+{% macro task_assignment_input_fields(task_data, user_data) %}
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_dropdown(id="task_id", text="Select Task", label="Task Id", primary_class="", invalid_msg="Please select task", items=task_data, required=true) }}
+</div>
+<div class="form-group">
+    {{ BASE_BUILDER.mcube_dropdown(id="username", text="Select User", label="Username", primary_class="", invalid_msg="Please select username", items=user_data, required=true) }}
+</div>
+{% endmacro %}

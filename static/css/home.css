@@ -9,11 +9,23 @@
     background: #0089ff1a 0% 0% no-repeat padding-box;
     box-shadow: 0px 2px 2px #00000033;
 }
-.text-wiz-dc8233 {
+
+/* Customized Text */
+
+.text-mcube-dc8233 {
     font: normal normal 600 22px/25px Nunito;
     color: #dc8233;
 }
-.btn-wiz-f47b4e {
+.text-mcube-0f7a79 {
+    font: normal normal 600 16px/16px Nunito;
+    color: #0f7a79;
+}
+
+/* Customized Text */
+
+/* Customized Buttons */
+
+.btn-mcube-f47b4e {
     background: #f47b4e;
     box-shadow: 0px 2px 4px #00000033;
     border-radius: 22px;
@@ -23,11 +35,11 @@
     letter-spacing: 0.26px;
     z-index: 100;
 }
-.btn-wiz-f47b4e:hover {
+.btn-mcube-f47b4e:hover {
     background: #0f7a79;
     color: white;
 }
-.btn-wiz-a21107 {
+.btn-mcube-a21107 {
     background: #a21107;
     box-shadow: 0px 2px 4px #00000033;
     border-radius: 22px;
@@ -36,11 +48,11 @@
     font: normal normal bold 13px/21px Nunito;
     letter-spacing: 0.26px;
 }
-.btn-wiz-a21107:hover {
+.btn-mcube-a21107:hover {
     background: #a21107;
     color: white;
 }
-.btn-wiz-dc8233 {
+.btn-mcube-dc8233 {
     background: #dc8233;
     box-shadow: 0px 2px 4px #00000033;
     border-radius: 22px;
@@ -49,7 +61,35 @@
     font: normal normal bold 13px/21px Nunito;
     letter-spacing: 0.26px;
 }
-.btn-wiz-dc8233:hover {
+.btn-mcube-dc8233:hover {
     background: #dc8233;
     color: white;
 }
+.btn-mcube-009290 {
+    background: #009290;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 22px;
+    opacity: 1;
+    color: white !important;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+}
+.btn-mcube-009290:hover {
+    background: #0f7a79;
+    color: white;
+}
+.btn-mcube-a21107 {
+    background: #a21107;
+    box-shadow: 0px 2px 4px #00000033;
+    border-radius: 22px;
+    opacity: 1;
+    color: white !important;
+    font: normal normal bold 13px/21px Nunito;
+    letter-spacing: 0.26px;
+}
+.btn-mcube-a21107:hover {
+    background: #a21107;
+    color: white;
+}
+
+/* Customized Buttons */
