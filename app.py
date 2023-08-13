@@ -16,6 +16,7 @@ from management.task_assignments.api import add_new_task_assignment, update_task
 import requests
 import json
 import os
+from jinja2.exceptions import UndefinedError  # Import UndefinedError
 
 app = Flask(__name__)
 
@@ -31,18 +32,22 @@ def home():
 @app.route("/<page_type>/")
 def pages(page_type):
     """This route will help to fetch all the data"""
-    data = {'project_data': [], 'user_data': []}
+    data = {}
     if page_type == 'tasks':
+        data = {'project_data': [], 'user_data': []}
         response = ProjectDB().get_all_projects()
         for project in response:
             data['project_data'].append({'action': project.project_id, 'value': project.name})
     elif page_type == 'task-assignments':
+        data = {'task_data': [], 'user_data': []}
         response = TaskDB().get_all_tasks()
         for task in response:
             data['task_data'].append({'action': task.task_id, 'value': task.name})
         response = UserDB().get_all_users()
         for user in response:
             data['user_data'].append({'action': user.username, 'value': f"{user.name}({user.username})"})
+
+    page_type = page_type.replace('-', '_')
 
     return render_template(page_type + "/index.html", data=data)
 
@@ -62,7 +67,7 @@ def fetch_data(page_type):
             entity_data = ProjectDB().get_all_projects()
         elif page_type == 'tasks':
             entity_data = TaskDB().get_all_tasks()
-        elif page_type == 'task-assignments':
+        elif page_type == 'task_assignments':
             entity_data = TaskAssignmentDB().get_all_task_assignments()
         for index, entity in enumerate(entity_data):
             entity.modify = macro_links_builder(entity_name=page_type[:-1], entity_data=entity.dump())
@@ -151,6 +156,18 @@ def not_found_error(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return render_template('error.html', error_code=500, error_message="Internal server error"), 500
+
+@app.errorhandler(UndefinedError)
+def handle_undefined_error(error):
+    return render_template('error.html', error_code=500, error_message="Undefined Error"), 500  # Render custom error template
+
+@app.errorhandler(400)
+def bad_request_error(error):
+    return render_template('error.html', error_code=400, error_message="Bad request"), 400
+
+@app.errorhandler(403)
+def forbidden_error(error):
+    return render_template('error.html', error_code=403, error_message="Forbidden"), 403
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)

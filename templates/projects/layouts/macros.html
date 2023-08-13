@@ -1,9 +1,9 @@
 {% import 'layouts/macros.html' as BASE_BUILDER %}
 {% macro project_input_fields() %}
 <div class="form-group">
-    {{ BASE_BUILDER.mcube_input_builder(id="name", label_text="Name:", input_type="text", placeholder="name", required=true) }}
+    {{ BASE_BUILDER.mcube_input_builder(id="name", label_text="Name:", input_type="text", placeholder="name", invalid_msg="Please enter name", required=true) }}
 </div>
 <div class="form-group">
-    {{ BASE_BUILDER.mcube_input_builder(id="description", label_text="Description:", input_type="text", placeholder="description", required=true) }}
+    {{ BASE_BUILDER.mcube_textarea(id='description', label_text='Description:', valid_msg="", invalid_msg="Please enter description", required=true) }}
 </div>
 {% endmacro %}

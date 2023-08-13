@@ -201,20 +201,17 @@ def _get_task(task_id):
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        sql = "SELECT task_id, project_id, name, description, status, last_modified FROM tasks where task_id = %s;"
-        data = (task_id,)
+        sql = "SELECT task_id, project_id, name, description, status, last_modified FROM tasks where task_id = ?;"
+        data = (task_id)
         cursor.execute(sql, data)
         result = cursor.fetchone()
-        _result = []
-        # to avoid error if result is empty
-        _result = [Task.load(dict(row)) for row in result]
 
         cursor.close()
         conn.close()
 
         print("Fetch data from the Task Db")
-        if len(_result) >= 1:
-            return _result[0]
+        if result is not None:
+            return TaskAssignment.load(dict(result))
         else:
             return None
     except OperationalError as ex:
@@ -275,9 +272,9 @@ def _get_limited_tasks(page_number, record_count):
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = "SELECT * FROM tasks OFFSET %s LIMIT %s"
+        query = "SELECT * FROM tasks OFFSET ? LIMIT ?"
 
-        cursor.execute(query, (offset, record_count,),)
+        cursor.execute(query, (offset, record_count))
         result = cursor.fetchall()
         _results = []
         # to avoid error if result is empty

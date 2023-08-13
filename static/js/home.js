@@ -54,10 +54,10 @@ $(function () {
         configure_task_assignments_page: function () {
             let that = this;
             that.fetch_entity_data('task_assignments');
-            that.add_entity_data('task_assignments', 'add_new_task_assignment');
-            that.update_entity_data('task_assignments', "update_task_assignment");
-            that.delete_entity_data('task_assignments', "delete_task_assignment");
-            that.configure_entity_datatable('task_assignments', []);
+            that.add_entity_data('task-assignments', 'add_new_task_assignment');
+            that.update_entity_data('task-assignments', "update_task_assignment");
+            that.delete_entity_data('task-assignments', "delete_task_assignment");
+            that.configure_entity_datatable('task_assignments_table', []);
         },
         configure_entity_datatable: function (data_table_id, table_data) {
             let that = this;
@@ -84,6 +84,10 @@ $(function () {
                     let form_data = new FormData(input_form);
                     for (let key of form_data.keys()) {
                         payload[key] = form_data.get(key);
+                    }
+                    let description = document.getElementById('description');
+                    if (description) {
+                        payload['description'] = description.value;
                     }
                     $.ajax({
                         url: '/insert_data/'+entity_name,
@@ -158,6 +162,11 @@ $(function () {
                     for (let key of form_data.keys()) {
                         payload[key] = form_data.get(key);
                     }
+                    let description = $('#update_form #description');
+                    if (description) {
+                        payload['description'] = description.val();
+                    }
+                    console.log(payload);
                     if (entity_name == 'task-assignments') {
                         payload['task_id'] = task_id;
                         payload['username'] = username;
@@ -182,7 +191,7 @@ $(function () {
         },
         delete_entity_data: function (entity_name, modal_id) {
             let that = this;
-            let entity_data, entity_unique_id, task_id, username;
+            let entity_data, entity_unique_id, task_id, username, payload={};
             $(document).on('click', '.delete-entity', function () {
                 entity_data = $(this).data('entity_data');
                 entity_data = that.string_to_json(entity_data);
@@ -204,7 +213,12 @@ $(function () {
             });
             let delete_data = document.getElementById("delete_data");
             delete_data.addEventListener("click", function() {
-                let payload = {'entity_unique_id': entity_unique_id};
+                if (entity_name == 'task-assignments') {
+                    payload['task_id'] = task_id;
+                    payload['username'] = username;
+                } else {
+                    payload['entity_unique_id'] = entity_unique_id;
+                }
                 $.ajax({
                     url: '/delete_data/'+entity_name,
                     dataType: "json",

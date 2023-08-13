@@ -118,12 +118,12 @@ class TaskAssignmentDB:
             response = []
         return response
 
-    def delete_task_assignment(self, task_id):
+    def delete_task_assignment(self, task_id, username):
         """Returns status of deletion of task"""
         try:
             response = False
             print("Deleting task using task_id")
-            response = _delete_task_assignment(task_id)
+            response = _delete_task_assignment(task_id, username)
             print(f"delete_task_assignment from DB -{response}")
         except Exception:
             print("Critical error in delete_task_assignment")
@@ -134,7 +134,7 @@ class TaskAssignmentDB:
 def _add_task_assignment(task_id, username):
     """This is a private function to add task assignment"""
     try:
-        print(f"Adding task assignment having task_id: {name}")
+        print(f"Adding task assignment having task_id: {task_id}")
         conn = sqlite3.connect('mcube.db')
         cursor = conn.cursor()
         last_modified = datetime.utcnow()
@@ -143,8 +143,9 @@ def _add_task_assignment(task_id, username):
             username=username,
             last_modified=last_modified
         )
-        sql = "INSERT INTO task_assignments (task_id, username, last_modified) VALUES (:task_id, :username, :last_modified)"
-
+        sql = "INSERT INTO task_assignments (task_id, username, last_modified) VALUES (:task_id, :username, :last_modified);"
+        print(task_asssignment.dump())
+        print(sql)
         cursor.execute(sql, task_asssignment.dump())
         conn.commit()
         cursor.close()
@@ -184,20 +185,17 @@ def _get_task_assignment(task_id, username):
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        sql = "SELECT task_id, username, last_modified FROM tasks where task_id = %s and username = %s;"
-        data = (task_id, username, )
+        sql = "SELECT task_id, username, last_modified FROM task_assignments where task_id = ? and username = ?;"
+        data = (task_id, username)
         cursor.execute(sql, data)
         result = cursor.fetchone()
-        _result = []
-        # to avoid error if result is empty
-        _result = [TaskAssignment.load(dict(row)) for row in result]
 
         cursor.close()
         conn.close()
 
         print("Fetch data from the TaskAssignment Db")
-        if len(_result) >= 1:
-            return _result[0]
+        if result is not None:
+            return TaskAssignment.load(dict(result))
         else:
             return None
     except OperationalError as ex:
@@ -258,9 +256,9 @@ def _get_limited_task_assignments(page_number, record_count):
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = "SELECT * FROM task_assignments OFFSET %s LIMIT %s"
+        query = "SELECT * FROM task_assignments OFFSET ? LIMIT ?"
 
-        cursor.execute(query, (offset, record_count,),)
+        cursor.execute(query, (offset, record_count))
         result = cursor.fetchall()
         _results = []
         # to avoid error if result is empty

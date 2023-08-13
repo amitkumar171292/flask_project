@@ -16,7 +16,7 @@
 </a>    
 {% endmacro %}
 <!-- Macro to create input -->
-{% macro mcube_input_builder(id="", label_text="", input_type="text", placeholder="", value="", invalid_msg="", pattern="", max_length='', valid_msg="Input value is correct", required=false) %}
+{% macro mcube_input_builder(id="", label_text="", input_type="text", placeholder="", value="", invalid_msg="", pattern="", max_length='', valid_msg="Valid!!!", required=false) %}
     <label for="{{ id }}">{{ label_text }}</label>
     <input type="{{ input_type }}" id="{{ id }}" class="form-control" name="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {% if required %} required="1" {% endif %} {{ pattern }} maxlength="{{max_length}}">
     <div class="valid-feedback">{{ valid_msg }}</div>
@@ -37,16 +37,24 @@
 </div>
 {% endmacro %}
 <!-- Dropdown macro -->
-{% macro mcube_dropdown(id="", text="", label="", primary_class="", items=[], value="") -%}
+{% macro mcube_dropdown(id="", text="", label="", primary_class="", items=[], value="", valid_msg="Valid!!!", invalid_msg="", required=false) -%}
 <div class="form-group {{ primary_class }}">
   <label for="{{ id }}">{{ label }}</label>
   <div class="dropdown">
-    <select class="form-control" id="{{ id }}" type="picklist" name="{{ id }}">
+    <select class="form-control" id="{{ id }}" type="picklist" name="{{ id }}" {% if required %} required="1" {% endif %}>
       <option value="{{ value }}" selected disabled hidden class="form-control">{{ text }}</option>
       {% for item in items %}
       <option value="{{ item['action'] }}">{{ item['value'] }}</option>
       {% endfor %}
     </select>
   </div>
+  <div class="valid-feedback">{{ valid_msg }}</div>
+  <div class="invalid-feedback">{{ invalid_msg }}</div>
 </div>
 {%- endmacro %}
+{% macro mcube_textarea(id='', label_text='', valid_msg="Valid!!!", invalid_msg="", required=false) %}
+    <label for="{{ id }}" class="title">{{ label_text }}</label>
+    <textarea class="form-control" id="{{ id }}" placeholder="Enter Description"  {% if required %} required {% endif %}></textarea>
+    <div class="valid-feedback">{{ valid_msg }}</div>
+    <div class="invalid-feedback">{{ invalid_msg }}</div>
+{% endmacro %}

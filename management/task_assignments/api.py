@@ -10,12 +10,20 @@ def add_new_task_assignment(content):
     try:
         print(f"Adding new task to DB: {content}")
         if content:
-            response[RESPONSE_STATUS_KWD], _ = TaskAssignmentDB().add_task_assignment(
+            response[RESPONSE_STATUS_KWD] = TaskAssignmentDB().get_task_assignment(
                 task_id=content["task_id"],
                 username=content["username"],
             )
             if response[RESPONSE_STATUS_KWD]:
-                response[RESPONSE_MSG_KWD] = f"We have successfully added Task assignment to DB: {content['name']}"
+                response[RESPONSE_STATUS_KWD] = False
+                response[RESPONSE_MSG_KWD] = f"Task with task_id: {content['task_id']} already being assigned to user: {content['username']}"
+            else:
+                response[RESPONSE_STATUS_KWD], _ = TaskAssignmentDB().add_task_assignment(
+                    task_id=content["task_id"],
+                    username=content["username"],
+                )
+                if response[RESPONSE_STATUS_KWD]:
+                    response[RESPONSE_MSG_KWD] = f"We have successfully added Task assignment to DB: {content['task_id']}"
 
     except Exception as ex:
         print(f"Error Occured add_new_task_assignment - {ex}")
@@ -30,12 +38,20 @@ def update_task_assignment(content):
     try:
         print(f"Updating task to DB: {content}")
         if content:
-            response[RESPONSE_STATUS_KWD] = TaskAssignmentDB().update_task_assignment(
+            response[RESPONSE_STATUS_KWD] = TaskAssignmentDB().get_task_assignment(
                 task_id=content["task_id"],
                 username=content["username"],
             )
             if response[RESPONSE_STATUS_KWD]:
-                response[RESPONSE_MSG_KWD] = f"We have successfully updated task assignment: {content['task_id']}"
+                response[RESPONSE_STATUS_KWD] = False
+                response[RESPONSE_MSG_KWD] = f"Task with task_id: {content['task_id']} already being assigned to user: {content['username']}"
+            else:
+                response[RESPONSE_STATUS_KWD] = TaskAssignmentDB().update_task_assignment(
+                    task_id=content["task_id"],
+                    username=content["username"],
+                )
+                if response[RESPONSE_STATUS_KWD]:
+                    response[RESPONSE_MSG_KWD] = f"We have successfully updated task assignment: {content['task_id']}"
 
     except Exception as ex:
         print(f"Error Occured update_task_assignment - {ex}")

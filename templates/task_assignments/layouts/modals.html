@@ -1,8 +1,8 @@
 <!-- Modal to create project -->
 {% import 'layouts/macros.html' as BASE_BUILDER %}
 {% import 'task_assignments/layouts/macros.html' as CORE_BUILDER %}
-{% macro add_task_modal(task_data, user_data) %}
-    <div id="add_new_task" class="modal fade" role="dialog">
+{% macro add_task_assignment_modal(task_data, user_data) %}
+    <div id="add_new_task_assignment" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -21,8 +21,8 @@
         </div>
     </div>
 {% endmacro %}
-{% macro update_task_modal(task_data, user_data) %}
-    <div id="update_task" class="modal fade" role="dialog">
+{% macro update_task_assignment_modal(task_data, user_data) %}
+    <div id="update_task_assignment" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -41,8 +41,8 @@
         </div>
     </div>
 {% endmacro %}
-{% macro delete_task_modal() %}
-    <div id="delete_task" class="modal fade" role="dialog">
+{% macro delete_task_assignment_modal() %}
+    <div id="delete_task_assignment" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

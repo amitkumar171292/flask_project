@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% include 'header.html' %}
 {% import 'layouts/macros.html' as BASE_BUILDER %}
-{% import 'tasks/layouts/modals.html' as MODAL_BUILDER %}
+{% import 'task_assignments/layouts/modals.html' as MODAL_BUILDER %}
 {% block title %}
     MCube Programs
 {% endblock %}
@@ -19,8 +19,8 @@
             </div>
             {% set columns = [
                 { "data": "index", "searchable": false, "orderable": false }, 
-                { "data": "task_id", "searchable": true, "orderable": true }, 
-                { "data": "username", "searchable": true, "orderable": true },
+                { "data": "task_id", "searchable": true, "orderable": true, "sClass": "copy-item-id cursor-pointer" }, 
+                { "data": "username", "searchable": true, "orderable": true, "sClass": "copy-item-id cursor-pointer" },
                 { "data": "last_modified", "searchable": true, "orderable": true },
                 { "data": "modify", "searchable": false, "orderable": false }
             ] %}
