@@ -256,9 +256,9 @@ def _get_limited_task_assignments(page_number, record_count):
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = "SELECT * FROM task_assignments OFFSET ? LIMIT ?"
+        query = "SELECT * FROM task_assignments LIMIT ? OFFSET ?;"
 
-        cursor.execute(query, (offset, record_count))
+        cursor.execute(query, (record_count, offset))
         result = cursor.fetchall()
         _results = []
         # to avoid error if result is empty

@@ -101,7 +101,7 @@ class TaskDB:
             response: List[Task] = []
             print("Getting limited tasks added till now")
             response: List[Task] = _get_limited_tasks(page_number, record_count) or []
-            print(f"get_limited_tasks from DB - {response}"[:5])
+            print(f"get_limited_tasks from DB - {response}")
         except Exception:
             print("Critical error in get_limited_tasks")
             response = []
@@ -202,7 +202,7 @@ def _get_task(task_id):
         cursor = conn.cursor()
 
         sql = "SELECT task_id, project_id, name, description, status, last_modified FROM tasks where task_id = ?;"
-        data = (task_id)
+        data = (task_id,)
         cursor.execute(sql, data)
         result = cursor.fetchone()
 
@@ -211,7 +211,7 @@ def _get_task(task_id):
 
         print("Fetch data from the Task Db")
         if result is not None:
-            return TaskAssignment.load(dict(result))
+            return Task.load(dict(result))
         else:
             return None
     except OperationalError as ex:
@@ -272,9 +272,9 @@ def _get_limited_tasks(page_number, record_count):
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = "SELECT * FROM tasks OFFSET ? LIMIT ?"
+        query = "SELECT * FROM tasks LIMIT ? OFFSET ?;"
 
-        cursor.execute(query, (offset, record_count))
+        cursor.execute(query, (record_count, offset))
         result = cursor.fetchall()
         _results = []
         # to avoid error if result is empty

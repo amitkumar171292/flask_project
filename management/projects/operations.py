@@ -93,7 +93,7 @@ class ProjectDB:
             response: List[Project] = []
             print("Getting limited projects added till now")
             response: List[Project] = _get_limited_projects(page_number, record_count) or []
-            print(f"get_limited_projects from DB - {response}"[:5])
+            print(f"get_limited_projects from DB - {response}")
         except Exception:
             print("Critical error in get_limited_projects")
             response = []
@@ -193,7 +193,7 @@ def _get_project(project_id):
         cursor = conn.cursor()
 
         sql = "SELECT project_id, name, description, last_modified FROM projects where project_id = ?;"
-        data = (project_id)
+        data = (project_id,)
         cursor.execute(sql, data)
         result = cursor.fetchone()
 
@@ -202,7 +202,7 @@ def _get_project(project_id):
 
         print("Fetch data from the Project Db")
         if result is not None:
-            return TaskAssignment.load(dict(result))
+            return Project.load(dict(result))
         else:
             return None
     except OperationalError as ex:
@@ -263,10 +263,11 @@ def _get_limited_projects(page_number, record_count):
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = "SELECT * FROM projects OFFSET ? LIMIT ?"
+        query = "SELECT project_id, name, description, last_modified FROM projects LIMIT ? OFFSET ?;"
 
-        cursor.execute(query, (offset, record_count))
+        cursor.execute(query, (record_count, offset))
         result = cursor.fetchall()
+        print(result)
         _results = []
         # to avoid error if result is empty
         _results = [Project.load(dict(row)) for row in result]
@@ -275,7 +276,7 @@ def _get_limited_projects(page_number, record_count):
         conn.close()
         return _results
     except OperationalError as ex:
-        print("Error occurred in _get_total_projects")
+        print("Error occurred in _get_limited_projects")
         raise ex
 
 def _delete_project(project_id):

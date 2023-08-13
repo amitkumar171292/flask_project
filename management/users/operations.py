@@ -96,7 +96,7 @@ class UserDB:
             response: List[User] = []
             print("Getting limited users added till now")
             response: List[User] = _get_limited_users(page_number, record_count) or []
-            print(f"get_limited_users from DB - {response}"[:5])
+            print(f"get_limited_users from DB - {response}")
         except Exception:
             print("Critical error in get_limited_users")
             response = []
@@ -196,7 +196,7 @@ def _get_user(username):
         cursor = conn.cursor()
 
         sql = "SELECT username, name, phone_number, email, last_modified FROM users where username = ?;"
-        data = (username)
+        data = (username,)
         cursor.execute(sql, data)
         result = cursor.fetchone()
 
@@ -205,7 +205,7 @@ def _get_user(username):
 
         print("Fetch data from the User Db")
         if result is not None:
-            return TaskAssignment.load(dict(result))
+            return User.load(dict(result))
         else:
             return None
     except OperationalError as ex:
@@ -266,9 +266,9 @@ def _get_limited_users(page_number, record_count):
         offset = (page_number - 1) * record_count
 
         # Fetch records with LIMIT and OFFSET
-        query = "SELECT * FROM users OFFSET ? LIMIT ?"
+        query = "SELECT * FROM users LIMIT ? OFFSET ?;"
 
-        cursor.execute(query, (offset, record_count))
+        cursor.execute(query, (record_count, offset))
         result = cursor.fetchall()
         _results = []
         # to avoid error if result is empty
