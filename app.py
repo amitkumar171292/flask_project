@@ -8,9 +8,11 @@ from db import DbConfig
 from management.users.operations import User, UserDB
 from management.projects.operations import Project, ProjectDB
 from management.tasks.operations import Task, TaskDB
+from management.task_assignments.operations import TaskAssignment, TaskAssignmentDB
 from management.users.api import add_new_user, update_user, delete_user
 from management.projects.api import add_new_project, update_project, delete_project
 from management.tasks.api import add_new_task, update_task, delete_task
+from management.task_assignments.api import add_new_task_assignment, update_task_assignment, delete_task_assignment
 import requests
 import json
 import os
@@ -29,11 +31,19 @@ def home():
 @app.route("/<page_type>/")
 def pages(page_type):
     """This route will help to fetch all the data"""
-    data = {'project_data': []}
+    data = {'project_data': [], 'user_data': []}
     if page_type == 'tasks':
-         response = ProjectDB().get_all_projects()
-         for project in response:
+        response = ProjectDB().get_all_projects()
+        for project in response:
             data['project_data'].append({'action': project.project_id, 'value': project.name})
+    elif page_type == 'task-assignments':
+        response = TaskDB().get_all_tasks()
+        for task in response:
+            data['task_data'].append({'action': task.task_id, 'value': task.name})
+        response = UserDB().get_all_users()
+        for user in response:
+            data['user_data'].append({'action': user.username, 'value': f"{user.name}({user.username})"})
+
     return render_template(page_type + "/index.html", data=data)
 
 @app.route('/fetch_data/<page_type>', methods=['GET'])
@@ -52,6 +62,8 @@ def fetch_data(page_type):
             entity_data = ProjectDB().get_all_projects()
         elif page_type == 'tasks':
             entity_data = TaskDB().get_all_tasks()
+        elif page_type == 'task-assignments':
+            entity_data = TaskAssignmentDB().get_all_task_assignments()
         for index, entity in enumerate(entity_data):
             entity.modify = macro_links_builder(entity_name=page_type[:-1], entity_data=entity.dump())
             entity.index = index
@@ -75,6 +87,8 @@ def insert_data(page_type):
             response = add_new_project(data)
         elif page_type == 'tasks':
             response = add_new_task(data)
+        elif page_type == 'task-assignments':
+            response = add_new_task_assignment(data)
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -90,6 +104,8 @@ def update_data(page_type):
             response = update_project(data)
         elif page_type == 'tasks':
             response = update_task(data)
+        elif page_type == 'task-assignments':
+            response = updatetask_assignment(data)
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -105,6 +121,8 @@ def delete_data(page_type):
             response = delete_project(data)
         elif page_type == 'tasks':
             response = delete_task(data)
+        elif page_type == 'task-assignments':
+            response = delete_task_assignment(data)
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})

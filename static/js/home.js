@@ -22,6 +22,9 @@ $(function () {
             } else if (window.location.href.indexOf("/tasks/") !== -1) {
                 console.log("Tasks Page");
                 that.configure_tasks_page();
+            } else if (window.location.href.indexOf("/task-assignments/") !== -1) {
+                console.log("Task Assignments Page");
+                that.configure_task_assignments_page();
             }
         },
         configure_projects_page: function () {
@@ -47,6 +50,14 @@ $(function () {
             that.update_entity_data('tasks', "update_task");
             that.delete_entity_data('tasks', "delete_task");
             that.configure_entity_datatable('tasks_table', []);
+        },
+        configure_task_assignments_page: function () {
+            let that = this;
+            that.fetch_entity_data('task_assignments');
+            that.add_entity_data('task_assignments', 'add_new_task_assignment');
+            that.update_entity_data('task_assignments', "update_task_assignment");
+            that.delete_entity_data('task_assignments', "delete_task_assignment");
+            that.configure_entity_datatable('task_assignments', []);
         },
         configure_entity_datatable: function (data_table_id, table_data) {
             let that = this;
@@ -107,7 +118,7 @@ $(function () {
         },
         update_entity_data: function (entity_name, modal_id) {
             let that = this;
-            let entity_data, entity_unique_id;
+            let entity_data, entity_unique_id, task_id, username;
             $(document).on('click', '.update-entity', function () {
                 entity_data = $(this).data('entity_data');
                 entity_data = that.string_to_json(entity_data);
@@ -117,17 +128,24 @@ $(function () {
                     $("#"+modal_id).find('#name').val(entity_data['name']);
                     $("#"+modal_id).find('#description').val(entity_data['description']);
                     $("#"+modal_id).find('#status').val(entity_data['status']);
+                    $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
                 } else if (entity_name == 'users') {
                     entity_unique_id = entity_data['username'];
                     $("#"+modal_id).find('#name').val(entity_data['name']);
                     $("#"+modal_id).find('#phone_number').val(entity_data['phone_number']);
                     $("#"+modal_id).find('#email').val(entity_data['email']);
+                    $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
                 } else if (entity_name == 'projects') {
                     entity_unique_id = entity_data['project_id'];
                     $("#"+modal_id).find('#name').val(entity_data['name']);
                     $("#"+modal_id).find('#description').val(entity_data['description']);
+                    $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
+                } else if (entity_name == 'task-assignments') {
+                    task_id = entity_data['task_id'];
+                    username = entity_data['username'];
+                    $("#"+modal_id).find('#task_id').val(task_id);
+                    $("#"+modal_id).find('#username').val(username);
                 }
-                $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
             });
             let payload = {};
             let update_form_data = document.getElementById("update_form_data");
@@ -140,7 +158,12 @@ $(function () {
                     for (let key of form_data.keys()) {
                         payload[key] = form_data.get(key);
                     }
-                    payload['entity_unique_id'] = entity_unique_id;
+                    if (entity_name == 'task-assignments') {
+                        payload['task_id'] = task_id;
+                        payload['username'] = username;
+                    } else {
+                        payload['entity_unique_id'] = entity_unique_id;
+                    }
                     $.ajax({
                         url: '/update_data/'+entity_name,
                         dataType: "json",
@@ -159,18 +182,25 @@ $(function () {
         },
         delete_entity_data: function (entity_name, modal_id) {
             let that = this;
-            let entity_data, entity_unique_id;
+            let entity_data, entity_unique_id, task_id, username;
             $(document).on('click', '.delete-entity', function () {
                 entity_data = $(this).data('entity_data');
                 entity_data = that.string_to_json(entity_data);
                 if (entity_name == 'tasks') {
                     entity_unique_id = entity_data['task_id'];
+                    $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
                 } else if (entity_name == 'users') {
                     entity_unique_id = entity_data['username'];
+                    $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
                 } else if (entity_name == 'projects') {
                     entity_unique_id = entity_data['project_id'];
+                    $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
+                } else if (entity_name == 'task-assignments') {
+                    task_id = entity_data['task_id'];
+                    username = entity_data['username'];
+                    $("#"+modal_id).find('#task_id').text(task_id);
+                    $("#"+modal_id).find('#username').text(username);
                 }
-                $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
             });
             let delete_data = document.getElementById("delete_data");
             delete_data.addEventListener("click", function() {

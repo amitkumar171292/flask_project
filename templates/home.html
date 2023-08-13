@@ -7,14 +7,17 @@
 {% block main_content %}
     <div class="home-page-bg p-3 mt-3 mx-3">
         <div class="row">
-            <div class="col-4 text-center">
+            <div class="col-3 text-center">
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn-mcube-dc8233', btn_text='Users', link=true, btn_link=url_for('pages', page_type='users')) }}
+            </div>
+            <div class="col-3 text-center">
                 {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn-mcube-f47b4e', btn_text='Projects', link=true, btn_link=url_for('pages', page_type='projects')) }}
             </div>
-            <div class="col-4 text-center">
+            <div class="col-3 text-center">
                 {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn-mcube-a21107', btn_text='Tasks', link=true, btn_link=url_for('pages', page_type='tasks')) }}
             </div>
-            <div class="col-4 text-center">
-                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn-mcube-dc8233', btn_text='Users', link=true, btn_link=url_for('pages', page_type='users')) }}
+            <div class="col-3 text-center">
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn-mcube-dc8233', btn_text='Task Assignments', link=true, btn_link=url_for('pages', page_type='task-assignments')) }}
             </div>
         </div>
     </div>

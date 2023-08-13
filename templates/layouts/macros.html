@@ -16,9 +16,9 @@
 </a>    
 {% endmacro %}
 <!-- Macro to create input -->
-{% macro mcube_input_builder(id="", label_text="", input_type="text", placeholder="", value="", valid_msg="Input value is correct", invalid_msg="", required=false) %}
+{% macro mcube_input_builder(id="", label_text="", input_type="text", placeholder="", value="", invalid_msg="", pattern="", max_length='', valid_msg="Input value is correct", required=false) %}
     <label for="{{ id }}">{{ label_text }}</label>
-    <input type="{{ input_type }}" id="{{ id }}" class="form-control" name="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {% if required %} required="1" {% endif %}>
+    <input type="{{ input_type }}" id="{{ id }}" class="form-control" name="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {% if required %} required="1" {% endif %} {{ pattern }} maxlength="{{max_length}}">
     <div class="valid-feedback">{{ valid_msg }}</div>
     <div class="invalid-feedback">{{ invalid_msg }}</div>
 {% endmacro %}

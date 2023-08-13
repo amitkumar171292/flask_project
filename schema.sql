@@ -30,6 +30,7 @@ CREATE TABLE tasks (
 CREATE TABLE task_assignments (
     task_id TEXT,
     username TEXT,
+    last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (task_id, username),
     FOREIGN KEY (task_id) REFERENCES tasks(task_id),
     FOREIGN KEY (username) REFERENCES users(username)

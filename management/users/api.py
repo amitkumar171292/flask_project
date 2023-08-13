@@ -16,7 +16,7 @@ def add_new_user(content):
                 email=content["email"]
             )
             if response[RESPONSE_STATUS_KWD]:
-                response[RESPONSE_MSG_KWD] = f"We have successfully added User to DB: {content['username']}"
+                response[RESPONSE_MSG_KWD] = f"We have successfully added User to DB: {content['name']}"
 
     except Exception as ex:
         print(f"Error Occured add_new_user - {ex}")

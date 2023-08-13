@@ -12,32 +12,26 @@
     <div class="home-page-bg p-3 mt-3 mx-3">
         <div class="row">
             <div class="col-6 d-flex align-items-center">
-                <span class="text-mcube-dc8233">My Tasks</span>
+                <span class="text-mcube-dc8233">My Task Assignment</span>
             </div>
             <div class="col-6 text-right">
-                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn btn-success', btn_text='Add New Task', modal=true, target='add_new_task') }}
+                {{ BASE_BUILDER.mcube_btn_builder(btn_id='', btn_color='btn btn-success', btn_text='Assign New Task', modal=true, target='add_new_task_assignment') }}
             </div>
             {% set columns = [
                 { "data": "index", "searchable": false, "orderable": false }, 
                 { "data": "task_id", "searchable": true, "orderable": true }, 
-                { "data": "project_id", "searchable": true, "orderable": true }, 
-                { "data": "name", "searchable": true, "orderable": true },
-                { "data": "description", "searchable": true, "orderable": true },
-                { "data": "status", "searchable": true, "orderable": true },
+                { "data": "username", "searchable": true, "orderable": true },
                 { "data": "last_modified", "searchable": true, "orderable": true },
                 { "data": "modify", "searchable": false, "orderable": false }
             ] %}
             <div id="data_table_column" data-columns="{{ columns }}" class="d-none"></div>
             <div class="col-12 mt-3">
-                <table id="tasks_table" class="display">
+                <table id="task_assignments_table" class="display">
                     <thead>
                         <tr>
                             <th>Index</th>
                             <th>Task Id</th>
-                            <th>Project Id</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Status</th>
+                            <th>Username</th>
                             <th>Last Modified</th>
                             <th>Modify</th>
                         </tr>
@@ -47,7 +41,7 @@
             </div>
         </div>
     </div>
-{{ MODAL_BUILDER.add_task_modal(project_data=data.project_data) }}
-{{ MODAL_BUILDER.update_task_modal(project_data=data.project_data) }}
-{{ MODAL_BUILDER.delete_task_modal() }}
+{{ MODAL_BUILDER.add_task_assignment_modal(task_data=data.task_data, user_data=data.user_data) }}
+{{ MODAL_BUILDER.update_task_assignment_modal(task_data=data.task_data, user_data=data.user_dat) }}
+{{ MODAL_BUILDER.delete_task_assignment_modal() }}
 {% endblock %}
