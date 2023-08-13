@@ -42,13 +42,12 @@
                             <th>Modify</th>
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
-{{ MODAL_BUILDER.add_task_modal() }}
-{{ MODAL_BUILDER.update_task_modal() }}
+{{ MODAL_BUILDER.add_task_modal(project_data=data.project_data) }}
+{{ MODAL_BUILDER.update_task_modal(project_data=data.project_data) }}
 {{ MODAL_BUILDER.delete_task_modal() }}
 {% endblock %}

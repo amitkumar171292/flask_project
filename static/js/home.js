@@ -10,6 +10,9 @@ $(function () {
         on_load: function () {
             console.log("On load");
             let that = this;
+            // Enable item id copy
+            that.copy_to_clipboard_dynamic("td.copy-item-id");
+            // Page routes to load JS
             if (window.location.href.indexOf("/projects/") !== -1) {
                 console.log("Projects Page");
                 that.configure_projects_page();
@@ -46,20 +49,9 @@ $(function () {
             that.configure_entity_datatable('tasks_table', []);
         },
         configure_entity_datatable: function (data_table_id, table_data) {
+            let that = this;
             let data_tables_columns = document.getElementById("data_table_column");
-            let columns = string_to_json(data_tables_columns.dataset.columns);
-            function string_to_json(json_string) {
-                try {
-                    json_string = json_string
-                        .replace(/:[ ]*False/g, ":false")
-                        .replace(/:[ ]*True/g, ":true")
-                        .replace(/'/g, '"');
-                    return JSON.parse(json_string);
-                } catch (err) {
-                    console.log("Could not parse, error: " + err.message);
-                    return null;
-                }
-            }
+            let columns = that.string_to_json(data_tables_columns.dataset.columns);
             $('#'+data_table_id).DataTable({
                 "destroy": true, // In order to reinitialize the datatable
                 "pagination": true, // For Pagination
@@ -104,8 +96,9 @@ $(function () {
                 url: '/fetch_data/'+entity_name,
                 type: 'GET',
                 success: function (data) {
-                    if (data['status'])
+                    if (data['status']) {
                         that.configure_entity_datatable(entity_name+'_table', data['entity_data']);
+                    }
                 },
                 error: function (error) {
                     console.error(error);
@@ -114,9 +107,26 @@ $(function () {
         },
         update_entity_data: function (entity_name, modal_id) {
             let that = this;
-            let entity_unique_id;
+            let entity_data, entity_unique_id;
             $(document).on('click', '.update-entity', function () {
-                entity_unique_id = $(this).data('entity_unique_id');
+                entity_data = $(this).data('entity_data');
+                entity_data = that.string_to_json(entity_data);
+                if (entity_name == 'tasks') {
+                    entity_unique_id = entity_data['task_id'];
+                    $("#"+modal_id).find('#project_id').val(entity_data['project_id']);
+                    $("#"+modal_id).find('#name').val(entity_data['name']);
+                    $("#"+modal_id).find('#description').val(entity_data['description']);
+                    $("#"+modal_id).find('#status').val(entity_data['status']);
+                } else if (entity_name == 'users') {
+                    entity_unique_id = entity_data['username'];
+                    $("#"+modal_id).find('#name').val(entity_data['name']);
+                    $("#"+modal_id).find('#phone_number').val(entity_data['phone_number']);
+                    $("#"+modal_id).find('#email').val(entity_data['email']);
+                } else if (entity_name == 'projects') {
+                    entity_unique_id = entity_data['project_id'];
+                    $("#"+modal_id).find('#name').val(entity_data['name']);
+                    $("#"+modal_id).find('#description').val(entity_data['description']);
+                }
                 $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
             });
             let payload = {};
@@ -149,10 +159,17 @@ $(function () {
         },
         delete_entity_data: function (entity_name, modal_id) {
             let that = this;
-            let entity_unique_id;
+            let entity_data, entity_unique_id;
             $(document).on('click', '.delete-entity', function () {
-                entity_unique_id = $(this).data('entity_unique_id');
-                console.log(entity_unique_id);
+                entity_data = $(this).data('entity_data');
+                entity_data = that.string_to_json(entity_data);
+                if (entity_name == 'tasks') {
+                    entity_unique_id = entity_data['task_id'];
+                } else if (entity_name == 'users') {
+                    entity_unique_id = entity_data['username'];
+                } else if (entity_name == 'projects') {
+                    entity_unique_id = entity_data['project_id'];
+                }
                 $("#"+modal_id).find('#entity_unique_id').text(entity_unique_id);
             });
             let delete_data = document.getElementById("delete_data");
@@ -189,6 +206,31 @@ $(function () {
                 location.reload();
             }, 2000);
         },
+        copy_to_clipboard_dynamic(selector, default_text = "Copy to Clipboard", copy_text = "Link Copied", inner_text = true) {
+            $(document).on("click", selector, function () {
+                inner_text ? navigator.clipboard.writeText(this.innerText) : navigator.clipboard.writeText(this.value);
+                $(this).attr("data-original-title", copy_text);
+                $(this).tooltip("update");
+                $(this).tooltip("show");
+            });
+            $(document).on("mouseenter", selector, function () {
+                $(this).attr("data-original-title", default_text);
+                $(this).tooltip("update");
+                $(this).tooltip("show");
+            });
+        },
+        string_to_json(json_string) {
+            try {
+                json_string = json_string
+                    .replace(/:[ ]*False/g, ":false")
+                    .replace(/:[ ]*True/g, ":true")
+                    .replace(/'/g, '"');
+                return JSON.parse(json_string);
+            } catch (err) {
+                console.log("Could not parse, error: " + err.message);
+                return null;
+            }
+        }
     };
     $(document).ready(function () {
         MCubeHome.init();

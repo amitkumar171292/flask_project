@@ -144,7 +144,7 @@ class TaskDB:
 
 # region TasksDB
 
-def _add_task(name, description):
+def _add_task(project_id, name, description, status):
     """This is a private function to add task"""
     try:
         print(f"Adding new task having task_id: {name}")

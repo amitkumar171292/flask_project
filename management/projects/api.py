@@ -21,22 +21,6 @@ def add_new_project(content):
         print(f"Error Occured add_new_project - {ex}")
     return response
 
-def fetch_all_projects():
-    """This function will fetch all project from our DB"""
-    response = DEFAULT_API_RESPONSE_OBJ.copy()
-    response[
-        RESPONSE_MSG_KWD
-    ] = "We are unable to fetch project data at this moment. Please try again or contact MCube Tech Team."
-    try:
-        project_data = ProjectDB().get_all_projects()
-        if project_data:
-            response["entity_data"] = project_data
-            response[RESPONSE_STATUS_KWD] = True
-            response[RESPONSE_MSG_KWD] = "We have fetched the data successfully"
-
-    except Exception as ex:
-        print(f"Error Occured fetch_all_projects - {ex}")
-    return response
 
 def update_project(content):
     """This function will update project to our DB"""

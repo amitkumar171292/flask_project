@@ -21,23 +21,7 @@ def add_new_user(content):
     except Exception as ex:
         print(f"Error Occured add_new_user - {ex}")
     return response
-
-def fetch_all_users():
-    """This function will fetch all user from our DB"""
-    response = DEFAULT_API_RESPONSE_OBJ.copy()
-    response[
-        RESPONSE_MSG_KWD
-    ] = "We are unable to fetch user data at this moment. Please try again or contact MCube Tech Team."
-    try:
-        user_data = UserDB().get_all_users()
-        if user_data:
-            response["entity_data"] = user_data
-            response[RESPONSE_STATUS_KWD] = True
-            response[RESPONSE_MSG_KWD] = "We have fetched the data successfully"
-
-    except Exception as ex:
-        print(f"Error Occured fetch_all_users - {ex}")
-    return response
+    
 
 def update_user(content):
     """This function will update user to our DB"""
